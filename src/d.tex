@@ -357,16 +357,28 @@ FMV.D.X & D & 0    & src  & 000  & dest & OP-FP  \\
 For XLEN$=$32 only, instructions are provided to move bit patterns
 between the floating-point and integer registers.
 
-The FMV.W.X  instruction copies the bits of the lower half
+The FMV.X.W  instruction copies the bits of the lower half
 of the double-precision floating-point source register
 into the integer destination register in the usual way
 (as for a single-precision floating-point,
 without checking that the source operand is correctly NaN-boxed).
 
-The FMVH.X.W instruction (alias of the FMV.X.D instruction)
+The FMVH.X.W instruction (binary alias of the FMV.X.D instruction)
 copies the bits of the upper half of the double-precision
 floating-point source register
 into the integer destination register.
+
+If both the FMVH.X.W and FMV.X.W are required
+for the same double-precision floating-point register,
+the recommended code sequence is:
+FMVH.X.W {\em rdh, fs1}; FMV.X.W {\em rdl, fs1}
+(where {\em fs1} is the same, but {\em rdh} cannot be the same as {\em rdl}).
+Microarchitectures can then fuse these into a single
+operation with single access to floating-point register
+instead of performing two separate accesses.
+This order of instructions distinguishes
+the reading of parts of a double-precision floating-point register
+from reading a register as a single-precision value only.
 
 For XLEN$=$32 only,
 the FMV.D.X instruction have additional
@@ -375,8 +387,15 @@ encoded in the instruction field {\em rs2}.
 The {\em rs2} operand is optional in assembler
 (default is hardwired to zero {\em x0}/{\em zero} register).
 This instruction concatenates the bits of the two registers {\em rs1}
-(upper half, IEEE 754-2008 the sign, the exponent and MSB of the mantissa/significand)
-and {\em rs2} (lower half, IEEE 754-2008 LSB of the mantissa/significand)
+(the upper half of the double-precision floating point value, 
+including the sign bit,
+exponent bits,
+and the most significant mantissa bits
+according to IEEE~754-2008)
+and {\em rs2} 
+(the lower half of the double-precision floating point value,
+including the least significant mantissa bits
+according to IEEE~754-2008)
 into the single 64 bits value and then copies these bits
 into the double-precision floating-point destination register {\em rd}
 as is.
