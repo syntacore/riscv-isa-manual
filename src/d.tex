@@ -354,10 +354,10 @@ FMV.D.X & D & 0    & src  & 000  & dest & OP-FP  \\
 \end{tabular}
 \end{center}
 
-For XLEN$=$32 only, instructions are provided to move bit patterns
+For XLEN$=$32 there are the following instructions to move bit patterns
 between the floating-point and integer registers.
 
-The FMVH.X.W instruction (binary alias of the FMV.X.D instruction)
+The FMVH.X.W instruction (binary alias of the FMV.X.D)
 copies the bits of the upper half of the double-precision
 floating-point source register
 into the integer destination register.
@@ -366,29 +366,28 @@ into the integer destination register.
 The "F" Standard Extension instruction FMV.X.W
 copies the bits of the lower half
 of the double-precision floating-point source register
-into the integer destination register in the usual way
-(as for a single-precision floating-point,
+into the integer destination register in the regular way
+(similar to the single-precision floating-point instruction,
 without checking that the source operand is correctly NaN-boxed).
 
 If both the FMVH.X.W and FMV.X.W are required
 for the same double-precision floating-point register,
-the recommended code sequence is:
+the following code sequence is recommended:
 FMVH.X.W {\em rdh, fs1}; FMV.X.W {\em rdl, fs1}
 (where {\em fs1} is the same, but {\em rdh} cannot be the same as {\em rdl}).
 Microarchitectures can then fuse these into a single
-operation with single access to floating-point register
+operation with single access to a floating-point register
 instead of performing two separate accesses.
 This order of instructions distinguishes
 the reading of parts of a double-precision floating-point register
 from reading a register as a single-precision value only.
 \end{samepage-commentary}
 
-For XLEN$=$32 only,
-the FMV.D.X instruction have additional
+For XLEN$=$32 the FMV.D.X instruction have additional
 source register operand
 encoded in the instruction field {\em rs2}.
 The {\em rs2} operand is optional in assembler
-(default is hardwired to zero {\em x0}/{\em zero} register).
+(and by default is hardwired to zero {\em x0}/{\em zero} register).
 This instruction concatenates the bits of the two registers {\em rs1}
 (the upper half of the double-precision floating point value, 
 including the sign bit,
@@ -402,7 +401,7 @@ according to IEEE~754-2008)
 into the single 64 bits value and then copies these bits
 into the double-precision floating-point destination register {\em rd}
 as is.
- 
+
 \vspace{-0.2in}
 \begin{center}
 \begin{tabular}{R@{}F@{}R@{}R@{}F@{}R@{}O}
