@@ -357,16 +357,18 @@ FMV.D.X & D & 0    & src  & 000  & dest & OP-FP  \\
 For XLEN$=$32 only, instructions are provided to move bit patterns
 between the floating-point and integer registers.
 
-The FMV.X.W  instruction copies the bits of the lower half
-of the double-precision floating-point source register
-into the integer destination register in the usual way
-(as for a single-precision floating-point,
-without checking that the source operand is correctly NaN-boxed).
-
 The FMVH.X.W instruction (binary alias of the FMV.X.D instruction)
 copies the bits of the upper half of the double-precision
 floating-point source register
 into the integer destination register.
+
+\begin{samepage-commentary}
+The "F" Standard Extension instruction FMV.X.W
+copies the bits of the lower half
+of the double-precision floating-point source register
+into the integer destination register in the usual way
+(as for a single-precision floating-point,
+without checking that the source operand is correctly NaN-boxed).
 
 If both the FMVH.X.W and FMV.X.W are required
 for the same double-precision floating-point register,
@@ -379,6 +381,7 @@ instead of performing two separate accesses.
 This order of instructions distinguishes
 the reading of parts of a double-precision floating-point register
 from reading a register as a single-precision value only.
+\end{samepage-commentary}
 
 For XLEN$=$32 only,
 the FMV.D.X instruction have additional
